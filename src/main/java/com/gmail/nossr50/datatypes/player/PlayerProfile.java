@@ -275,11 +275,20 @@ public class PlayerProfile {
      * @return the Xp remaining until next level
      */
     public int getXpToLevel(SkillType skillType) {
+        int level;
+
         if (Config.getInstance().getCumulativeCurveEnabled()) {
-            return 1020 + (UserManager.getPlayer(playerName).getPowerLevel() * Config.getInstance().getFormulaMultiplierCurve());
+            level = UserManager.getPlayer(playerName).getPowerLevel();
+        }
+        else {
+           level = skills.get(skillType);
         }
 
-        return 1020 + (skills.get(skillType) * Config.getInstance().getFormulaMultiplierCurve());
+        if (!Config.getInstance().getFormulaExponential()) {
+            return 1020 + (level * Config.getInstance().getFormulaMultiplierCurve());
+        } else {
+            return (int) Math.floor(3 * Math.pow(level, 1.85) + 20);
+        }
     }
 
     private int getChildSkillLevel(SkillType skillType) {
