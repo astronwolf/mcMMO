@@ -39,6 +39,9 @@ public class PlayerProfile {
     private HashMap<SkillType, LinkedList<SkillXpGain>> gainedSkillsXp = new HashMap<SkillType, LinkedList<SkillXpGain>>();
     private HashMap<SkillType, Float> rollingSkillsXp = new HashMap<SkillType, Float>();
 
+    // Store highest XP gains in 10 minutes for debug purposes
+    private HashMap<SkillType, Float> highestGainedXP = new HashMap<SkillType, Float>();
+
     public PlayerProfile(String playerName) {
         this.playerName = playerName;
 
@@ -286,7 +289,7 @@ public class PlayerProfile {
     public void registeredXpGain(SkillType skillType, float xp) {
         LinkedList<SkillXpGain> gains = gainedSkillsXp.get(skillType);
 
-        if(gains == null) {
+        if (gains == null) {
             gains = new LinkedList<SkillXpGain>(); // Maybe add an initial capacity?
         }
         gains.addLast(new SkillXpGain(System.currentTimeMillis(), xp));
@@ -303,23 +306,37 @@ public class PlayerProfile {
      */
     public void removeXpGainsOlderThan(long age) {
         long now = System.currentTimeMillis();
+        boolean print = true;
 
         Iterator<Entry<SkillType, LinkedList<SkillXpGain>>> iterator = gainedSkillsXp.entrySet().iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             Entry<SkillType, LinkedList<SkillXpGain>> skillGains = iterator.next();
 
             float xp = 0;
             // Because we are using a LinkedList and addLast ordering is guaranteed, so we loop through and remove things that are too old, and stop immediately once we find a young'n
             Iterator<SkillXpGain> gainsIterator = skillGains.getValue().iterator();
-            while(gainsIterator.hasNext()) {
+            while (gainsIterator.hasNext()) {
                 SkillXpGain gain = gainsIterator.next();
 
-                if(now - gain.getTime() >= age) {
+                if (now - gain.getTime() >= age) {
                     gainsIterator.remove();
-                    // Because gainedSkillsXp conatins this SkillType, we assume that rollingSkillsXp must also have this SkillType
-                    xp += rollingSkillsXp.get(skillGains.getKey());
-                } else {
+                    // Because gainedSkillsXp contains this SkillType, we assume that rollingSkillsXp must also have this SkillType
+                    xp += gain.getXp();
+                }
+                else {
                     break;
+                }
+            }
+            SkillType skillType = skillGains.getKey();
+            if (getRegisteredXpGain(skillType) > 0) {
+                if (!highestGainedXP.containsKey(skillType) || (getRegisteredXpGain(skillType) > highestGainedXP.get(skillType))) {
+                    highestGainedXP.put(skillType, getRegisteredXpGain(skillType));
+
+                    if (print) {
+                        mcMMO.p.debug("New maximum amount of XP Earned in 10 minutes: " + playerName + "...");
+                    }
+                    print = false;
+                    mcMMO.p.debug("SkillType: " + skillType + " xp = " + getRegisteredXpGain(skillType));
                 }
             }
             rollingSkillsXp.put(skillGains.getKey(), rollingSkillsXp.get(skillGains.getKey()) - xp);
