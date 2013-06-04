@@ -166,8 +166,10 @@ public final class CombatUtils {
             }
         }
 
+        /* Temporary fix for MCPC+ servers
         switch (damager.getType()) {
-            case WOLF:
+            case WOLF:*/
+        if (damager.getType() == EntityType.WOLF){ 
                 Wolf wolf = (Wolf) damager;
 
                 if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
@@ -201,27 +203,35 @@ public final class CombatUtils {
                     }
                 }
 
-                break;
-
-            case ARROW:
+                //break;
+        }
+        //    case ARROW:  Same temporary fix as above switch
+        if (damager.getType() == EntityType.ARROW) { 
                 LivingEntity shooter = ((Arrow) damager).getShooter();
+                boolean bools = true; // Temporary fix for MCPC+
 
                 /* Break instead of return due to Dodge/Counter/Deflect abilities */
                 if (shooter == null || !(shooter instanceof Player)) {
-                    break;
+                    bools = false;
+                    //break;
                 }
 
-                if (!shouldProcessSkill(target, SkillType.ARCHERY)) {
-                    break;
+                if (bools && !shouldProcessSkill(target, SkillType.ARCHERY)) {
+                    bools = false;
+                    //break;
                 }
 
-                Player player = (Player) shooter;
-
-                if (Misc.isNPCEntity(player)) {
-                    break;
+                Player player = null;
+                if (bools) {
+                    player = (Player) shooter;
                 }
 
-                if (Permissions.skillEnabled(player, SkillType.ARCHERY)) {
+                if (bools && Misc.isNPCEntity(player)) {
+                    bools = false;
+                    //break;
+                }
+
+                if (bools && Permissions.skillEnabled(player, SkillType.ARCHERY)) {
                     McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
                     ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
@@ -253,11 +263,11 @@ public final class CombatUtils {
 
                     startGainXp(mcMMOPlayer, target, SkillType.ARCHERY, damager.getMetadata(mcMMO.bowForceKey).get(0).asDouble());
                 }
-
+        /* Same temporary fix as above switch statement
                 break;
 
             default:
-                break;
+                break;*/
         }
 
         if (target instanceof Player) {
