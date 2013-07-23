@@ -15,7 +15,8 @@ import com.gmail.nossr50.util.player.UserManager;
 
 public class FormulaConversionTask extends BukkitRunnable {
 
-    private final Map<Integer, Integer> experienceNeeded = new HashMap<Integer, Integer>(); // Experience needed to reach a level
+    // Experience needed to reach a level, cached values to improve conversion speed
+    private final Map<Integer, Integer> experienceNeeded = new HashMap<Integer, Integer>();
 
     @Override
     public void run() {
@@ -33,9 +34,7 @@ public class FormulaConversionTask extends BukkitRunnable {
                 profile = mcMMOPlayer.getProfile();
                 editValues(profile);
             }
-
         }
-
     }
 
     private void editValues(PlayerProfile profile) {
