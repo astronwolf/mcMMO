@@ -8,7 +8,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.runnables.database.FormulaConversionTask;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
@@ -16,7 +16,7 @@ import com.google.common.collect.ImmutableList;
 public class McconvertCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (Config.getInstance().getFormulaExponential()) {
+        if (ExperienceConfig.getInstance().getFormulaExponential()) {
             sender.sendMessage("Already converted."); // TODO: Localize
             return true;
         }

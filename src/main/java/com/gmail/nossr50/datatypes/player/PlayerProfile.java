@@ -8,6 +8,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -275,19 +276,30 @@ public class PlayerProfile {
      * @return the Xp remaining until next level
      */
     public int getXpToLevel(SkillType skillType) {
-        int level;
+        int level = (ExperienceConfig.getInstance().getCumulativeCurveEnabled()) ? UserManager.getPlayer(playerName).getPowerLevel() : skills.get(skillType);
 
-        if (Config.getInstance().getCumulativeCurveEnabled()) {
-            level = UserManager.getPlayer(playerName).getPowerLevel();
+        if (!ExperienceConfig.getInstance().getFormulaExponential()) {
+            int multiplier = ExperienceConfig.getInstance().getLinearMultiplier();
+            if (multiplier <= 0) {
+                multiplier = 20;
+            }
+
+            return ExperienceConfig.getInstance().getLinearBase() + (level * multiplier);
         }
         else {
-           level = skills.get(skillType);
-        }
+            int multiplier = ExperienceConfig.getInstance().getExponentialMultiplier();
+            double exponent = ExperienceConfig.getInstance().getExponentialExponent();
+            int base = ExperienceConfig.getInstance().getExponentialBase();
 
-        if (!Config.getInstance().getFormulaExponential()) {
-            return 1020 + (level * Config.getInstance().getFormulaMultiplierCurve());
-        } else {
-            return (int) Math.floor(3 * Math.pow(level, 1.85) + 20);
+            if (multiplier <= 0) {
+                multiplier = 3;
+            }
+
+            if (exponent <= 0) {
+                exponent = 1.85;
+            }
+
+            return (int) Math.floor(multiplier * Math.pow(level, exponent) + base);
         }
     }
 

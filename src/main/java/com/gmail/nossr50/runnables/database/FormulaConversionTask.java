@@ -7,7 +7,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -74,8 +74,13 @@ public class FormulaConversionTask extends BukkitRunnable {
         int skillLevel = profile.getSkillLevel(skillType);
         int skillXPLevel = profile.getSkillXpLevel(skillType);
 
-        for (int i = 1; i <= skillLevel; i++) {
-            totalXP += (1020 + i * Config.getInstance().getFormulaMultiplierCurve());
+        int multiplier = ExperienceConfig.getInstance().getLinearMultiplier();
+        if (multiplier <= 0) {
+            multiplier = 20;
+        }
+
+        for (int level = 1; level <= skillLevel; level++) {
+            totalXP += (ExperienceConfig.getInstance().getLinearBase() + level * multiplier);
         }
         totalXP += skillXPLevel;
 
@@ -103,15 +108,27 @@ public class FormulaConversionTask extends BukkitRunnable {
         return newExperienceValues;
     }
 
-    private int getCachedValue(int i) {
+    private int getCachedValue(int level) {
         int experience;
 
-        if (experienceNeeded.containsKey(i)) {
-            experience = experienceNeeded.get(i);
+        if (experienceNeeded.containsKey(level)) {
+            experience = experienceNeeded.get(level);
         }
         else {
-            experience = (int) Math.floor(3 * Math.pow(i, 1.85) + 20);
-            experienceNeeded.put(i, experience);
+            int multiplier = ExperienceConfig.getInstance().getExponentialMultiplier();
+            double exponent = ExperienceConfig.getInstance().getExponentialExponent();
+            int base = ExperienceConfig.getInstance().getExponentialBase();
+
+            if (multiplier <= 0) {
+                multiplier = 3;
+            }
+
+            if (exponent <= 0) {
+                exponent = 1.85;
+            }
+
+            experience = (int) Math.floor(multiplier * Math.pow(level, exponent) + base);
+            experienceNeeded.put(level, experience);
         }
         return experience;
     }
