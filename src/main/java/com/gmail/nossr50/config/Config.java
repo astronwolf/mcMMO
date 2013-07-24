@@ -168,6 +168,14 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Skills.Taming.Call_Of_The_Wild.Fish_Required should be at least 1!");
         }
 
+        if (getTamingCOTWAmount(EntityType.OCELOT) <= 0) {
+            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot_Amount should be greater than 0!");
+        }
+
+        if (getTamingCOTWAmount(EntityType.WOLF) <= 0) {
+            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf_Amount should be greater than 0!");
+        }
+
         if (getExperienceGainsGlobalMultiplier() <= 0) {
             reason.add("Experience.Gains.Multiplier.Global should be greater than 0!");
         }
