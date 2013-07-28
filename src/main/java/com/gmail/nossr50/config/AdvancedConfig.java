@@ -1,10 +1,16 @@
 package com.gmail.nossr50.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.gmail.nossr50.mcMMO;
+
 public class AdvancedConfig extends AutoUpdateConfigLoader {
     private static AdvancedConfig instance;
 
     private AdvancedConfig() {
         super("advanced.yml");
+        loadKeys();
     }
 
     public static AdvancedConfig getInstance() {
@@ -16,14 +22,293 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     }
 
     @Override
-    protected void loadKeys() {}
+    protected void loadKeys() {
+        // Validate all the settings!
+        List<String> reason = new ArrayList<String>();
+
+        /* GENERAL */
+        if (getAbilityLength() < 1) {
+            reason.add("Skills.General.Ability_IncreaseLevel should be at least 1!");
+        }
+
+        if (getEnchantBuff() < 1) {
+            reason.add("Skills.General.Ability_EnchantBuff should be at least 1!");
+        }
+
+        /* ACROBATICS */
+        if (getDodgeChanceMax() < 1) {
+            reason.add("Skills.Acrobatics.Dodge_ChanceMax should be at least 1!");
+        }
+
+        if (getDodgeMaxBonusLevel() < 1) {
+            reason.add("Skills.Acrobatics.Dodge_MaxBonusLevel should be at least 1!");
+        }
+
+        if (getDodgeDamageModifier() <= 1) {
+            reason.add("Skills.Acrobatics.Dodge_DamageModifer should be greater than 1!");
+        }
+
+        if (getRollChanceMax() < 1) {
+            reason.add("Skills.Acrobatics.Roll_ChanceMax should be at least 1!");
+        }
+
+        if (getRollMaxBonusLevel() < 1) {
+            reason.add("Skills.Acrobatics.Roll_MaxBonusLevel should be at least 1!");
+        }
+
+        if (getRollDamageThreshold() < 0) {
+            reason.add("Skills.Acrobatics.Roll_DamageThreshold should be at least 0!");
+        }
+
+        if (getGracefulRollChanceMax() < 1) {
+            reason.add("Skills.Acrobatics.GracefulRoll_ChanceMax should be at least 1!");
+        }
+
+        if (getGracefulRollMaxBonusLevel() < 1) {
+            reason.add("Skills.Acrobatics.GracefulRoll_MaxBonusLevel should be at least 1!");
+        }
+
+        if (getGracefulRollDamageThreshold() < 0) {
+            reason.add("Skills.Acrobatics.GracefulRoll_DamageThreshold should be at least 0!");
+        }
+
+        if (getDodgeXPModifier() < 0) {
+            reason.add("Skills.Acrobatics.Dodge_XP_Modifier should be at least 0!");
+        }
+
+        if (getRollXPModifier() < 0) {
+            reason.add("Skills.Acrobatics.Roll_XP_Modifier should be at least 0!");
+        }
+
+        if (getFallXPModifier() < 0) {
+            reason.add("Skills.Acrobatics.Fall_XP_Modifier should be at least 0!");
+        }
+
+        /* ARCHERY */
+        if (getSkillShotIncreaseLevel() < 1) {
+            reason.add("Skills.Archery.SkillShot_IncreaseLevel should be at least 1!");
+        }
+
+        if (getSkillShotIncreasePercentage() <= 0) {
+            reason.add("Skills.Archery.SkillShot_IncreasePercentage should be greater than 0!");
+        }
+
+        if (getSkillShotBonusMax() < 0) {
+            reason.add("Skills.Archery.SkillShot_MaxBonus should be at least 0!");
+        }
+
+        if (getDazeBonusMax() < 1) {
+            reason.add("Skills.Acrobatics.Daze_MaxChance should be at least 1!");
+        }
+
+        if (getDazeMaxBonusLevel() < 1) {
+            reason.add("Skills.Acrobatics.Daze_MaxBonusLevel should be at least 1!");
+        }
+
+        if (getDazeModifier() < 0) {
+            reason.add("Skills.Acrobatics.Daze_BonusDamage should be at least 0!");
+        }
+
+        if (getRetrieveChanceMax() < 1) {
+            reason.add("Skills.Acrobatics.Retrieve_MaxBonus should be at least 1!");
+        }
+
+        if (getRetrieveMaxBonusLevel() < 1) {
+            reason.add("Skills.Acrobatics.Retrieve_MaxBonusLevel should be at least 1!");
+        }
+
+        if (getForceMultiplier() < 0) {
+            reason.add("Skills.Acrobatics.Force_Multiplier should be at least 0!");
+        }
+
+        /* AXES */
+        if (getBonusDamageAxesBonusMax() < 1) {
+            reason.add("Skills.Axes.DamageIncrease_MaxBonus should be at least 1!");
+        }
+
+        if (getBonusDamageAxesMaxBonusLevel() < 1) {
+            reason.add("Skills.Axes.DamageIncrease_MaxBonusLevel should be at least 1!");
+        }
+
+        if (getAxesCriticalChance() < 1) {
+            reason.add("Skills.Axes.AxesCritical_MaxChance should be at least 1!");
+        }
+
+        if (getAxesCriticalMaxBonusLevel() < 1) {
+            reason.add("Skills.Axes.AxesCritical_MaxBonusLevel should be at least 1!");
+        }
+
+        if (getAxesCriticalPVPModifier() < 1) {
+            reason.add("Skills.Axes.AxesCritical_PVP_Modifier should be at least 1!");
+        }
+
+        if (getAxesCriticalPVEModifier() < 1) {
+            reason.add("Skills.Axes.AxesCritical_PVE_Modifier should be at least 1!");
+        }
+
+        if (getGreaterImpactChance() < 1) {
+            reason.add("Skills.Axes.GreaterImpact_Chance should be at least 1!");
+        }
+
+        if (getGreaterImpactModifier() < 1) {
+            reason.add("Skills.Axes.GreaterImpact_KnockbackModifier should be at least 1!");
+        }
+
+        if (getGreaterImpactBonusDamage() < 1) {
+            reason.add("Skills.Axes.GreaterImpact_BonusDamage should be at least 1!");
+        }
+
+        if (getArmorImpactIncreaseLevel() < 1) {
+            reason.add("Skills.Axes.ArmorImpact_IncreaseLevel should be at least 1!");
+        }
+
+        if (getImpactChance() < 1) {
+            reason.add("Skills.Axes.ArmorImpact_Chance should be at least 1!");
+        }
+
+        if (getArmorImpactMaxDurabilityDamage() < 1) {
+            reason.add("Skills.Axes.ArmorImpact_MaxPercentageDurabilityDamage should be at least 1!");
+        }
+
+        if (getSkullSplitterModifier() < 1) {
+            reason.add("Skills.Axes.SkullSplitter_DamagerModifier should be at least 1!");
+        }
+
+        /* FISHING */
+        if (getFishingTierLevelsTier1() >= getFishingTierLevelsTier2()) {
+            reason.add("Skills.Fishing.Tier_Levels.Tier1 should be less than Skills.Fishing.Tier_Levels.Tier2!");
+        }
+
+        if (getFishingTierLevelsTier2() >= getFishingTierLevelsTier3()) {
+            reason.add("Skills.Fishing.Tier_Levels.Tier2 should be less than Skills.Fishing.Tier_Levels.Tier3!");
+        }
+
+        if (getFishingTierLevelsTier3() >= getFishingTierLevelsTier4()) {
+            reason.add("Skills.Fishing.Tier_Levels.Tier3 should be less than Skills.Fishing.Tier_Levels.Tier4!");
+        }
+
+        if (getFishingTierLevelsTier4() >= getFishingTierLevelsTier5()) {
+            reason.add("Skills.Fishing.Tier_Levels.Tier4 should be less than Skills.Fishing.Tier_Levels.Tier5!");
+        }
+
+        if (getFishingMagicMultiplier() <= 0) {
+            reason.add("Skills.Fishing.MagicHunter_Multiplier should be greater than 0!");
+        }
+
+        if (getFishermanDietRankChange() < 1) {
+            reason.add("Skills.Fishing.Fisherman_Diet_RankChange should be at least 1!");
+        }
+
+        if (getIceFishingUnlockLevel() < 1) {
+            reason.add("Skills.Fishing.Ice_Fishing_UnlockLevel should be at least 1!");
+        }
+
+        if (getShakeUnlockLevel() < 1) {
+            reason.add("Skills.Fishing.Shake_UnlockLevel should be at least 1!");
+        }
+
+        if (getShakeChanceRank1() > getShakeChanceRank2()) {
+            reason.add("Skills.Fishing.Shake_Chance.Rank_1 should be less or equal to Skills.Fishing.Shake_Chance.Rank_2!");
+        }
+
+        if (getShakeChanceRank2() > getShakeChanceRank3()) {
+            reason.add("Skills.Fishing.Shake_Chance.Rank_2 should be less or equal to Skills.Fishing.Shake_Chance.Rank_3!");
+        }
+
+        if (getShakeChanceRank3() > getShakeChanceRank4()) {
+            reason.add("Skills.Fishing.Shake_Chance.Rank_3 should be less or equal to Skills.Fishing.Shake_Chance.Rank_4!");
+        }
+
+        if (getShakeChanceRank4() > getShakeChanceRank5()) {
+            reason.add("Skills.Fishing.Shake_Chance.Rank_4 should be less or equal to Skills.Fishing.Shake_Chance.Rank_5!");
+        }
+
+        if (getFishingVanillaXPModifierRank1() > getFishingVanillaXPModifierRank2()) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_1 should be less or equal to Skills.Fishing.VanillaXPBoost.Rank_2!");
+        }
+
+        if (getFishingVanillaXPModifierRank2() > getFishingVanillaXPModifierRank3()) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_2 should be less or equal to Skills.Fishing.VanillaXPBoost.Rank_3!");
+        }
+
+        if (getFishingVanillaXPModifierRank3() > getFishingVanillaXPModifierRank4()) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_3 should be less or equal to Skills.Fishing.VanillaXPBoost.Rank_4!");
+        }
+
+        if (getFishingVanillaXPModifierRank4() > getFishingVanillaXPModifierRank5()) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_4 should be less or equal to Skills.Fishing.VanillaXPBoost.Rank_5!");
+        }
+
+        if (getFishingVanillaXPModifierRank1() < 0) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_1 should be at least 0!");
+        }
+
+        if (getFishingVanillaXPModifierRank2() < 0) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_2 should be at least 0!");
+        }
+
+        if (getFishingVanillaXPModifierRank3() < 0) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_3 should be at least 0!");
+        }
+
+        if (getFishingVanillaXPModifierRank4() < 0) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_4 should be at least 0!");
+        }
+
+        if (getFishingVanillaXPModifierRank5() < 0) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_5 should be at least 0!");
+        }
+
+        /* HERBALISM */
+        if (getFarmerDietRankChange() < 1) {
+            reason.add("Skills.Herbalism.Farmer_Diet_RankChange should be at least 1!");
+        }
+
+        if (getGreenThumbStageChange() < 1) {
+            reason.add("Skills.Herbalism.GreenThumb_StageChange should be at least 1!");
+        }
+
+        if (getGreenThumbChanceMax() < 1) {
+            reason.add("Skills.Herbalism.GreenThumb_ChanceMax should be at least 1!");
+        }
+
+        if (getGreenThumbMaxLevel() < 1) {
+            reason.add("Skills.Herbalism.GreenThumb_MaxBonusLevel should be at least 1!");
+        }
+
+        if (getHerbalismDoubleDropsChanceMax() < 1) {
+            reason.add("Skills.Herbalism.DoubleDrops_ChanceMax should be at least 1!");
+        }
+
+        if (getHerbalismDoubleDropsMaxLevel() < 1) {
+            reason.add("Skills.Herbalism.DoubleDrops_MaxBonusLevel should be at least 1!");
+        }
+
+        if (getHylianLuckChanceMax() < 1) {
+            reason.add("Skills.Herbalism.HylianLuck_ChanceMax should be at least 1!");
+        }
+
+        if (getHylianLuckMaxLevel() < 1) {
+            reason.add("Skills.Herbalism.HylianLuck_MaxBonusLevel should be at least 1!");
+        }
+
+        if (getShroomThumbChanceMax() < 1) {
+            reason.add("Skills.Herbalism.ShroomThumb_ChanceMax should be at least 1!");
+        }
+
+        if (getShroomThumbMaxLevel() < 1) {
+            reason.add("Skills.Herbalism.ShroomThumb_MaxBonusLevel should be at least 1!");
+        }
+
+        // Check if there were any errors
+        if (noErrorsInConfig(reason)) {
+            mcMMO.p.debug("No errors found in config.yml!");
+        }
+    }
 
     /* GENERAL */
     public int getAbilityLength() { return config.getInt("Skills.General.Ability_IncreaseLevel", 50); }
-    public int getEnchantBuff() {
-        int buff = config.getInt("Skills.General.Ability_EnchantBuff", 5);
-        return (buff <= 0) ? 1 : buff;
-    }
+    public int getEnchantBuff() { return config.getInt("Skills.General.Ability_EnchantBuff", 5); }
 
     /* ACROBATICS */
     public double getDodgeChanceMax() { return config.getDouble("Skills.Acrobatics.Dodge_ChanceMax", 20.0D); }
@@ -292,4 +577,12 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public String getPlayerEscapeMessage() { return config.getString("Kraken.Defeated_Message.Escape", "You have escaped from the kraken!"); }
     public int getKrakenAttackInterval() { return config.getInt("Kraken.Attack_Interval_Seconds", 1); }
     public int getKrakenAttackDamage() { return config.getInt("Kraken.Attack_Damage", 1); }
+
+    private boolean noErrorsInConfig(List<String> issues) {//TODO move this to misc
+        for (String issue : issues) {
+            plugin.getLogger().warning(issue);
+        }
+
+        return issues.isEmpty();
+    }
 }
