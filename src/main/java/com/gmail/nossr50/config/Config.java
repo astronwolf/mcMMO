@@ -116,7 +116,7 @@ public class Config extends AutoUpdateConfigLoader {
         }
 
         if (getPartyShareBonusIncrease() < 0) {
-            reason.add("Party.Sharing.ExpShare_bonus_increase should be greater than or equal to 0!");
+            reason.add("Party.Sharing.ExpShare_bonus_increase should be at least 0!");
         }
 
         if (getPartyShareBonusCap() <= 0) {
@@ -181,23 +181,23 @@ public class Config extends AutoUpdateConfigLoader {
         }
 
         if (getPlayerVersusPlayerXP() < 0) {
-            reason.add("Experience.Gains.Multiplier.PVP should be greater than 0!");
+            reason.add("Experience.Gains.Multiplier.PVP should be at least 0!");
         }
 
         if (getAnimalsXP() < 0) {
-            reason.add("Experience.Gains.Multiplier.Animals should be greater than 0!");
+            reason.add("Experience.Gains.Multiplier.Animals should be at least 0!");
         }
 
         if (getWitherSkeletonXP() < 0) {
-            reason.add("Experience.Gains.Multiplier.Wither_Skeleton should be greater than 0!");
+            reason.add("Experience.Gains.Multiplier.Wither_Skeleton should be at least 0!");
         }
 
         if (getSpawnedMobXpMultiplier() < 0) {
-            reason.add("Experience.Gains.Mobspawners.Multiplier should be greater than 0!");
+            reason.add("Experience.Gains.Mobspawners.Multiplier should be at least 0!");
         }
 
         if (getFormulaMultiplierCurve() < 0) {
-            reason.add("Experience.Formula.Curve_Modifier should be greater than 0!");
+            reason.add("Experience.Formula.Curve_Modifier should be at least 0!");
         }
 
         // Check if there were any errors
